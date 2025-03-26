@@ -1,14 +1,14 @@
-import {Button} from "antd";
+import { Button } from "antd";
 
 const Header = () => {
-    return <div className="header">
-        <div className="header__inner container">
-            <div className="header__logo logo">
-                Some company
+    return (
+        <header className="sticky top-0 bg-white shadow-md z-50">
+            <div className="container mx-auto flex items-center justify-between py-4 px-6">
+                <div className="text-xl font-bold">Some company</div>
+                <Button type="primary" className="!px-12" href="/contacts">Contact us</Button>
             </div>
-            <Button type="primary">Contact us</Button>
-        </div>
-    </div>
-}
+        </header>
+    );
+};
 
 export default Header;

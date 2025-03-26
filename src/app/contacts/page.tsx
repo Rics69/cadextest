@@ -1,5 +1,9 @@
+'use client'
+
+import Contact from "@/components/contact";
+
 const Contacts = () => {
-  return <div>Contacts</div>;
+  return <Contact />;
 };
 
 export default Contacts;

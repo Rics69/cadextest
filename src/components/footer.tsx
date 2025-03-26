@@ -1,9 +1,9 @@
 const Footer = () => {
-    return <div className="footer">
-        <div className="footer__logo logo">
-            Some Company 2024
-        </div>
-    </div>
-}
+    return (
+        <footer className="py-6 bg-black text-white text-center">
+            <div className="text-lg">Some Company 2024</div>
+        </footer>
+    );
+};
 
 export default Footer;
