@@ -1,18 +1,20 @@
 'use client'
 
-import { Typography } from "antd";
+import Header from "./header";
+import Footer from "./footer";
 import LoginForm from "./loginform";
-
-const { Title } = Typography;
 
 const Contact = () => {
     return (
-        <section className="contact">
-            <div className="contact__inner container">
-                <Title level={1}>Only CTA on the page</Title>
-                <LoginForm />
-            </div>
-        </section>
+        <>
+            <Header />
+            <section className="contact flex items-center justify-center min-h-screen bg-gray-50">
+                <div className="contact__inner container p-6 bg-white shadow-lg rounded-lg max-w-md w-full">
+                    <LoginForm />
+                </div>
+            </section>
+            <Footer />
+        </>
     )
 }
 

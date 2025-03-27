@@ -1,61 +1,86 @@
 'use client'
 
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Typography } from "antd";
 import type { FormProps } from 'antd';
+import { useState } from "react";
+
+const { TextArea } = Input;
+const { Title } = Typography;
 
 type FieldType = {
     username?: string;
     email?: string;
     message?: string;
-  };
-  
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
-  };
-  
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+};
 
 const LoginForm = () => {
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+        try {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(values),
+            });
+    
+            console.log(values);
+    
+            if (response.ok) {
+                setMessage(`Спасибо за проявленный интерес, ${values.username}`);
+                setFormSubmitted(true);
+            } else {
+                alert("Ошибка при отправке формы");
+            }
+        } catch (error) {
+            console.error("Ошибка:", error);
+            alert("Ошибка сети");
+        }
+    };
+
+    if (formSubmitted) {
+        return (
+            <div className="flex justify-center items-center min-h-[400px]">
+                <Title level={2} className="text-center">{message}</Title>
+            </div>
+        );
+    }
+
     return (
-    <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-    >
-        <Form.Item<FieldType>
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+        <Form
+            name="contact"
+            layout="vertical"
+            onFinish={onFinish}
+            className="space-y-4"
         >
-            <Input />
-        </Form.Item>
+            <Form.Item<FieldType>
+                label="Name"
+                name="username"
+                rules={[{ required: true, message: 'Please input your name!' }]}
+            >
+                <Input />
+            </Form.Item>
 
-        <Form.Item<FieldType>
-            label="Password"
-            name="email"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-            <Input.Password />
-        </Form.Item>
+            <Form.Item<FieldType>
+                label="Email"
+                name="email"
+                rules={[{ required: true, message: 'Please input your email!' }]}
+            >
+                <Input type="email" />
+            </Form.Item>
 
-        <Form.Item<FieldType> name="message" valuePropName="checked" label={null}>
-            <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+            <Form.Item label="Message" name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
+                <TextArea rows={4} />
+            </Form.Item>
 
-        <Form.Item label={null}>
-            <Button type="primary" htmlType="submit">
-                Submit
-            </Button>
-        </Form.Item>
-    </Form>
-)
+            <Form.Item>
+                <Button type="primary" htmlType="submit" className="w-full">
+                    Submit
+                </Button>
+            </Form.Item>
+        </Form>
+    )
 }
 
 export default LoginForm;
